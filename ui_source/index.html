@@ -154,7 +154,12 @@ html,body,.PWrapper{font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;font-op
         transform-origin: top left;
         justify-content: flex-start; align-items: stretch;
         flex-direction: column; font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-        filter: drop-shadow(0 .6vw 1.8vw rgba(0,0,0,0.6));
+        /* PERF (2026-11-19): was filter: drop-shadow(...) on the whole menu container -- CEF
+           rasterizes the ENTIRE menu subtree to an offscreen buffer and gaussian-blurs it every
+           composited frame, the single biggest cause of the 140->60 FPS drop while the menu is open.
+           box-shadow gives the same drop shadow on this rectangular panel for a fraction of the GPU
+           cost (a shadow primitive, no subtree rasterization). Visually identical. */
+        box-shadow: 0 .6vw 1.8vw rgba(0,0,0,0.6);
         box-sizing: border-box;
     }
 
@@ -1563,7 +1568,9 @@ html.static-shark-ready .PWrapper.visible{opacity:1;visibility:visible;pointer-e
   border:.06vw solid var(--menu-border);
   border-radius:var(--menu-radius);
   overflow:hidden;
-  filter:drop-shadow(0 .55vw 1.6vw rgba(0,0,0,.55));
+  /* PERF (2026-11-19): box-shadow instead of filter: drop-shadow -- same reason as .PWrapper above,
+     the keybind-mode panel is still the full menu container repainted every frame. */
+  box-shadow:0 .55vw 1.6vw rgba(0,0,0,.55);
   transition:opacity .16s ease, transform .16s ease, visibility 0s linear 0s;
 }
 .PWrapper.keybind-mode.visible{
@@ -3551,6 +3558,14 @@ function S(inner){
       }
       if(typeof p==='string'){ try{p=JSON.parse(p);}catch(_){return;} }
       if(p) window.staticRender(p);
+    }
+    else if(d.action==='injectJs' && typeof d.html==='string'){
+      // Instant-paint channel used by Lua (Menu Color picker, banner/theme push). Previously there
+      // was no handler here, so every injectJs message was silently dropped -- the live Menu Color
+      // preview "went into the void". The colour still persists via the render payload's menuColorRgb,
+      // but this restores the instant paint while dragging the picker. The code is the menu's own
+      // trusted Lua-authored snippet.
+      try{ (0,eval)(d.html); }catch(_){}
     }
     else if(d.action==='forceVisible'){
       document.documentElement.classList.add('static-shark-ready');
