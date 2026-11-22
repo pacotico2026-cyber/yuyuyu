@@ -154,12 +154,7 @@ html,body,.PWrapper{font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;font-op
         transform-origin: top left;
         justify-content: flex-start; align-items: stretch;
         flex-direction: column; font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-        /* PERF (2026-11-19): was filter: drop-shadow(...) on the whole menu container -- CEF
-           rasterizes the ENTIRE menu subtree to an offscreen buffer and gaussian-blurs it every
-           composited frame, the single biggest cause of the 140->60 FPS drop while the menu is open.
-           box-shadow gives the same drop shadow on this rectangular panel for a fraction of the GPU
-           cost (a shadow primitive, no subtree rasterization). Visually identical. */
-        box-shadow: 0 .6vw 1.8vw rgba(0,0,0,0.6);
+        filter: drop-shadow(0 .6vw 1.8vw rgba(0,0,0,0.6));
         box-sizing: border-box;
     }
 
@@ -1568,9 +1563,7 @@ html.static-shark-ready .PWrapper.visible{opacity:1;visibility:visible;pointer-e
   border:.06vw solid var(--menu-border);
   border-radius:var(--menu-radius);
   overflow:hidden;
-  /* PERF (2026-11-19): box-shadow instead of filter: drop-shadow -- same reason as .PWrapper above,
-     the keybind-mode panel is still the full menu container repainted every frame. */
-  box-shadow:0 .55vw 1.6vw rgba(0,0,0,.55);
+  filter:drop-shadow(0 .55vw 1.6vw rgba(0,0,0,.55));
   transition:opacity .16s ease, transform .16s ease, visibility 0s linear 0s;
 }
 .PWrapper.keybind-mode.visible{
@@ -1996,9 +1989,6 @@ html.static-shark-ready .PWrapper.visible{opacity:1;visibility:visible;pointer-e
 </style>
 <style id="phaze-recolor">
 /* ===== Accent tokens derived from --menu-color (picker-driven) + barra keybind ===== */
-/* Accents derive from --menu-color so the in-menu color picker recolors everything.
-   --menu-color itself is NOT forced here (that stomped the picker); it comes from the
-   :root default, the theme rules, or the picker's inline override. */
 :root, html[data-theme]{
   --accent:rgb(var(--menu-color))!important;
   --accent-dim:rgba(var(--menu-color),.14)!important;
