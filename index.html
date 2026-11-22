@@ -1988,27 +1988,26 @@ html.static-shark-ready .PWrapper.visible{opacity:1;visibility:visible;pointer-e
 .hovering-text-toast.visible{opacity:1;}
 </style>
 <style id="phaze-recolor">
-/* ===== RECOLOR ONLY: morado-fucsia (tokens, cero estructura) + barra keybind ===== */
+/* ===== Accent tokens derived from --menu-color (picker-driven) + barra keybind ===== */
 :root, html[data-theme]{
-  --menu-color: 208, 31, 185 !important;
-  --accent:#d01fb9 !important;
-  --accent-dim:rgba(208,31,185,.14)!important;
-  --accent-glow:rgba(208,31,185,.30)!important;
-  --accent-drop:rgba(208,31,185,.12)!important;
-  --accent-rail:rgba(208,31,185,.95)!important;
-  --accent-border:rgba(208,31,185,.36)!important;
-  --accent-menu-shadow:rgba(208,31,185,.08)!important;
-  --accent-row-inset:rgba(208,31,185,.88)!important;
-  --accent-row-glow:rgba(208,31,185,.10)!important;
-  --accent-switch-border:rgba(208,31,185,.68)!important;
-  --accent-slider-from:#9c1a93 !important;
-  --accent-footer-shadow:rgba(208,31,185,.12)!important;
-  --accent-panel-border:rgba(208,31,185,.40)!important;
-  --accent-panel-shadow:rgba(208,31,185,.10)!important;
-  --accent-input-border:rgba(208,31,185,.42)!important;
-  --accent-hud-border:rgba(208,31,185,.28)!important;
-  --accent-icon-bg:rgba(208,31,185,.14)!important;
-  --accent-icon-border:rgba(208,31,185,.40)!important;
+  --accent:rgb(var(--menu-color))!important;
+  --accent-dim:rgba(var(--menu-color),.14)!important;
+  --accent-glow:rgba(var(--menu-color),.30)!important;
+  --accent-drop:rgba(var(--menu-color),.12)!important;
+  --accent-rail:rgba(var(--menu-color),.95)!important;
+  --accent-border:rgba(var(--menu-color),.36)!important;
+  --accent-menu-shadow:rgba(var(--menu-color),.08)!important;
+  --accent-row-inset:rgba(var(--menu-color),.88)!important;
+  --accent-row-glow:rgba(var(--menu-color),.10)!important;
+  --accent-switch-border:rgba(var(--menu-color),.68)!important;
+  --accent-slider-from:color-mix(in srgb, rgb(var(--menu-color)) 78%, #000)!important;
+  --accent-footer-shadow:rgba(var(--menu-color),.12)!important;
+  --accent-panel-border:rgba(var(--menu-color),.40)!important;
+  --accent-panel-shadow:rgba(var(--menu-color),.10)!important;
+  --accent-input-border:rgba(var(--menu-color),.42)!important;
+  --accent-hud-border:rgba(var(--menu-color),.28)!important;
+  --accent-icon-bg:rgba(var(--menu-color),.14)!important;
+  --accent-icon-border:rgba(var(--menu-color),.40)!important;
 }
 /* barra "Press F10 to set a keybind" bajo el footer (aparece con el menu) */
 .PWrapper .kbbar{
